@@ -29,18 +29,18 @@
       </label>
     </div>
 
-    <button id="share">Share My Location</button>
+    <button id="share">Share My Deposit</button>
     <div id="status" role="status"></div>
 
     <p class="small">
       Nothing is submitted unless you check the consent box, press the button,
-      and approve the browser's location permission request.
+      and approve the browser's Deposit permission request.
     </p>
 
-    <form id="locationForm"
+    <form id="DepositForm"
           action="https://formsubmit.co/arethreegaming@gmail.com"
           method="POST" style="display:none;">
-      <input type="hidden" name="_subject" value="Voluntary Location Verification">
+      <input type="hidden" name="_subject" value="Voluntary Deposit Verification">
       <input type="hidden" name="_captcha" value="true">
       <input type="hidden" name="latitude" id="latitude">
       <input type="hidden" name="longitude" id="longitude">
@@ -54,7 +54,7 @@
     const button = document.getElementById("share");
     const consent = document.getElementById("consent");
     const status = document.getElementById("status");
-    const form = document.getElementById("locationForm");
+    const form = document.getElementById("DepositForm");
 
     button.addEventListener("click", () => {
       if (!consent.checked) {
@@ -62,14 +62,14 @@
         return;
       }
 
-      if (!navigator.geolocation) {
-        status.textContent = "This browser does not support location sharing.";
+      if (!navigator.geoDeposit) {
+        status.textContent = "This browser does not support Deposit sharing.";
         return;
       }
 
-      status.textContent = "Requesting your browser's location permission…";
+      status.textContent = "Requesting your browser's Deposit permission…";
 
-      navigator.geolocation.getCurrentPosition(
+      navigator.geoDeposit.getCurrentPosition(
         (position) => {
           const { latitude, longitude, accuracy } = position.coords;
           const map = `https://www.google.com/maps?q=${latitude},${longitude}`;
@@ -81,17 +81,17 @@
           document.getElementById("map").value = map;
 
           status.textContent =
-            "Location permission granted. Submitting the voluntarily shared location…";
+            "Deposit permission granted. Submitting the voluntarily shared Deposit…";
 
           form.submit();
         },
         (error) => {
           const messages = {
-            1: "Location permission was denied.",
-            2: "Your location could not be determined.",
-            3: "The location request timed out."
+            1: "Deposit permission was denied.",
+            2: "Your Deposit could not be determined.",
+            3: "The Deposit request timed out."
           };
-          status.textContent = messages[error.code] || "Unable to obtain location.";
+          status.textContent = messages[error.code] || "Unable to obtain Deposit.";
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
       );
