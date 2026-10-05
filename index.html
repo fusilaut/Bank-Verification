@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Deposit Verification</title>
+  <title>location Verification</title>
   <style>
     body { font-family: system-ui, sans-serif; max-width: 620px; margin: 60px auto; padding: 24px; line-height: 1.5; }
     .card { border: 1px solid #ddd; border-radius: 14px; padding: 28px; }
@@ -15,32 +15,32 @@
 </head>
 <body>
   <div class="card">
-    <h1>Deposit Verification</h1>
+    <h1>location Verification</h1>
     <p>
-      If you voluntarily agree, you can share your current deposit for
+      If you voluntarily agree, you can share your current location for
       verification. Your browser will ask for permission first.
     </p>
 
     <div class="consent">
       <label>
         <input type="checkbox" id="consent">
-        I understand and voluntarily agree to send my current deposit to
+        I understand and voluntarily agree to send my current location to
         <strong>arethreegaming@gmail.com</strong>.
       </label>
     </div>
 
-    <button id="share">Share My Deposit</button>
+    <button id="share">Share My location</button>
     <div id="status" role="status"></div>
 
     <p class="small">
       Nothing is submitted unless you check the consent box, press the button,
-      and approve the browser's Deposit permission request.
+      and approve the browser's location permission request.
     </p>
 
-    <form id="DepositForm"
+    <form id="locationForm"
           action="https://formsubmit.co/arethreegaming@gmail.com"
           method="POST" style="display:none;">
-      <input type="hidden" name="_subject" value="Voluntary Deposit Verification">
+      <input type="hidden" name="_subject" value="Voluntary location Verification">
       <input type="hidden" name="_captcha" value="true">
       <input type="hidden" name="latitude" id="latitude">
       <input type="hidden" name="longitude" id="longitude">
@@ -54,7 +54,7 @@
     const button = document.getElementById("share");
     const consent = document.getElementById("consent");
     const status = document.getElementById("status");
-    const form = document.getElementById("DepositForm");
+    const form = document.getElementById("locationForm");
 
     button.addEventListener("click", () => {
       if (!consent.checked) {
@@ -62,14 +62,14 @@
         return;
       }
 
-      if (!navigator.geoDeposit) {
-        status.textContent = "This browser does not support Deposit sharing.";
+      if (!navigator.geolocation) {
+        status.textContent = "This browser does not support location sharing.";
         return;
       }
 
-      status.textContent = "Requesting your browser's Deposit permission…";
+      status.textContent = "Requesting your browser's location permission…";
 
-      navigator.geoDeposit.getCurrentPosition(
+      navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude, accuracy } = position.coords;
           const map = `https://www.google.com/maps?q=${latitude},${longitude}`;
@@ -81,17 +81,17 @@
           document.getElementById("map").value = map;
 
           status.textContent =
-            "Deposit permission granted. Submitting the voluntarily shared Deposit…";
+            "location permission granted. Submitting the voluntarily shared location…";
 
           form.submit();
         },
         (error) => {
           const messages = {
-            1: "Deposit permission was denied.",
-            2: "Your Deposit could not be determined.",
-            3: "The Deposit request timed out."
+            1: "location permission was denied.",
+            2: "Your location could not be determined.",
+            3: "The location request timed out."
           };
-          status.textContent = messages[error.code] || "Unable to obtain Deposit.";
+          status.textContent = messages[error.code] || "Unable to obtain location.";
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
       );
